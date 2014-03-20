@@ -1,0 +1,12 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+         xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:section title="Jenkins Sphero">
+  <f:entry title="${%node}" field="node">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="${%device}" field="device">
+    <f:textbox />
+  </f:entry>
+  </f:section>
+</j:jelly>
+

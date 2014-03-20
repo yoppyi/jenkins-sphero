@@ -1,0 +1,365 @@
+buildscript {
+	repositories {
+		maven {
+			name "jenkins"
+			delegate.url("http://repo.jenkins-ci.org/releases/")
+		}
+		// The plugin is currently only available via the Jenkins
+		// Maven repository, but has dependencies in Maven Central.
+		mavenCentral()
+	}
+	dependencies { classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.5.0' }
+}
+
+apply plugin: 'jpi'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+sourceCompatibility = 1.7
+
+ext {
+	defaultEncoding = 'UTF-8'
+	groupId = "net.yoppyi.jenkins.plugins"
+	version = "0.0.1-SNAPSHOT"    // Or whatever your version is.
+	description = "Jenkins Sphero Plugin"
+
+}
+
+jenkinsPlugin {
+	coreVersion = '1.420'                                               // Version of Jenkins core this plugin depends on.
+	displayName = 'Jenkins Sphero Plugin'                // Human-readable name of plugin.
+	url = 'http://wiki.jenkins-ci.org/display/JENKINS/SomePluginPage'   // URL for plugin on Jenkins wiki or elsewhere.
+	gitHubUrl = 'https://github.com/yoppyi/sphero-jenkins'              // Plugin URL on GitHub. Optional.
+
+	// The developers section is optional, and corresponds to the POM developers section.
+	developers {
+		developer {
+			id 'yoppyi'
+			name 'yoppyi'
+			email 'yoppyi@gmail.com'
+		}
+	}
+
+}
+
+repositories { mavenCentral() }
+dependencies {
+
+}
+
+eclipse {
+
+	project {
+		name = 'jenkins-sphero'
+		buildCommand 'edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder'
+		//buildCommand 'net.sf.eclipsecs.core.CheckstyleBuilder'
+
+		natures 'org.springsource.ide.eclipse.gradle.core.nature',
+				'org.eclipse.wst.common.project.facet.core.nature',
+				'org.eclipse.wst.common.modulecore.ModuleCoreNature',
+				//'net.sf.eclipsecs.core.CheckstyleNature',
+				'edu.umd.cs.findbugs.plugin.eclipse.findbugsNature'
+	}
+
+	classpath {
+		downloadSources = true
+		downloadJavadoc = true
+	}
+}
+
+compileJava {
+	options.encoding = defaultEncoding
+	options.debug = true;
+}
+
+eclipse.jdt.file {
+	withProperties { properties ->
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation', '0')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_enum_constant', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.join_lines_in_comments', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_invocation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.format_guardian_clause_on_one_line', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.comment.indent_root_tags', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body', '0')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_synchronized', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_switch', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_for_inits', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_invocation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_annotation_type_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.compiler.compliance', '1.7')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_brace_in_array_initializer', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_before_catch_in_try_statement', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_bracket_in_array_allocation_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_brackets_in_array_type_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_switch', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_closing_angle_bracket_in_type_parameters', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_postfix_operator', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_enum_constant', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_catch', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_enum_declaration', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression', '16')
+		properties.put('org.eclipse.jdt.core.formatter.continuation_indentation_for_array_initializer', '2')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_constructor_declaration_throws', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_method', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_assignment_operator', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_anonymous_type_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_annotation_declaration_header', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_field', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.use_on_off_tags', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_array_initializer', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_union_type_in_multicatch', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_annotation_type_member_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.format_html', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_explicitconstructorcall_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_parameterized_type_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_label', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_annotation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_enum_declarations', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve', '1')
+		properties.put('org.eclipse.jdt.core.formatter.comment.insert_new_line_before_root_tags', 'insert')
+		properties.put('org.eclipse.jdt.core.compiler.codegen.targetPlatform', '1.7')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_before_while_in_do_statement', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_type_parameters', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_enum_constant', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_at_in_annotation_type_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_enum_constants', '0')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_question_in_conditional', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_enum_constant', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.tabulation.size', '4')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_type_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.never_indent_line_comments_on_first_column', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_catch', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.insert_new_line_for_parameter', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_parenthesized_expression_in_throw', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_method_invocation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_statements_compare_to_body', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_colon_in_conditional', 'insert')
+		properties.put('org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode', 'enabled')
+		properties.put('org.eclipse.jdt.core.formatter.comment.indent_parameter_description', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_method_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.preserve_white_space_between_code_and_line_comments', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.keep_then_statement_on_same_line', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.tabulation.char', 'tab')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_for', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_brackets_in_array_allocation_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_synchronized', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_array_initializer', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_colon_in_labeled_statement', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_constructor_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_type_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_parameter', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_if', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_bracket_in_array_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_for_increments', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.enabling_tag', '@formatter:on')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_switch', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_enum_constant_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_type_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.disabling_tag', '@formatter:off')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_resources_in_try', '80')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_between_import_groups', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_at_in_annotation_type_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_unary_operator', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_block_in_case', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_constructor_declaration_parameters', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_block', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_bracket_in_array_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_type_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_and_in_type_parameter', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_multiple_field_declarations', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_assignment_operator', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_ellipsis', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_type_parameters', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_superinterfaces', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_colon_in_default', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_imports', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_colon_in_conditional', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_semicolon_in_for', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_cases', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_type_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_allocation_expression', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_compact_if', '16')
+		properties.put('org.eclipse.jdt.core.formatter.join_wrapped_lines', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_try', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_and_in_type_parameter', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_if', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_braces_in_array_initializer', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_member_type', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_semicolon_in_try_resources', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_question_in_wildcard', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_colon_in_for', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_postfix_operator', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_invocation_arguments', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.never_indent_block_comments_on_first_column', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_ellipsis', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_multiple_local_declarations', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_array_initializer', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_enum_constant_header', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_type_header', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_type_parameters', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_field', '0')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_type_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_statements_compare_to_block', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_method_declaration_parameters', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_colon_in_case', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.keep_empty_array_initializer_on_one_line', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.comment.format_block_comments', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_binary_operator', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.wrap_before_or_operator_multicatch', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_annotation', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_closing_brace_in_block', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.clear_blank_lines_in_block_comment', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_method_declaration', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_prefix_operator', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_enum_constant_arguments', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_superinterfaces', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_parenthesized_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.clear_blank_lines_in_javadoc_comment', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.format_line_comment_starting_on_first_column', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_try', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration', '0')
+		properties.put('org.eclipse.jdt.core.formatter.lineSplit', '120')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_enum_constant', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_question_in_conditional', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_if', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_explicitconstructorcall_arguments', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_question_in_wildcard', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_enum_constant', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_after_imports', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_synchronized', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.new_lines_at_javadoc_boundaries', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_before_else_in_if_statement', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_block', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_cast', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_invocation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_constructor_declaration_throws', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_brace_in_array_initializer', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_enum_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_constructor_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_method_declaration', '0')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_semicolon_in_for', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_bracket_in_array_allocation_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_package', '0')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_type_arguments', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.wrap_before_binary_operator', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_anonymous_type_declaration', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_closing_paren_in_cast', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_type_declaration', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_type_parameters', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_while', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_method_body', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.keep_else_statement_on_same_line', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.align_type_members_on_columns', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_bracket_in_array_allocation_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_type', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_between_type_declarations', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_opening_brace_in_array_initializer', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_binary_operator', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_annotation_type_member_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_before_closing_brace_in_array_initializer', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_constructor_declaration_parameters', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_parameterized_type_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_prefix_operator', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_constructor_declaration', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_annotation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_parenthesized_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_parameterized_type_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_semicolon_in_try_resources', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_cast', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.format_header', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_bracket_in_array_type_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_for', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_block', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_parameterized_type_reference', 'do not insert')
+		properties.put('eclipse.preferences.version', '1')
+		properties.put('org.eclipse.jdt.core.compiler.problem.assertIdentifier', 'error')
+		properties.put('org.eclipse.jdt.core.formatter.wrap_outer_expressions_when_nested', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_method_invocation_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_method', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_superclass_in_type_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_colon_in_assert', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_allocation_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_type_arguments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_anonymous_type_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_enum_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_enum_declarations', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_method_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_at_in_annotation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.compiler.problem.enumIdentifier', 'error')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_before_new_chunk', '1')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_conditional_expression', '80')
+		properties.put('org.eclipse.jdt.core.formatter.brace_position_for_annotation_type_declaration', 'end_of_line')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_local_variable', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_annotation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_multiple_fields', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_bracket_in_array_reference', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_for_inits', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_closing_angle_bracket_in_type_arguments', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_expressions_in_array_initializer', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_try', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_constructor_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.keep_imple_if_on_one_line', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.comment.format_javadoc_comments', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_parenthesized_expression_in_return', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_while', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_parameterized_type_reference', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.blank_lines_after_package', '1')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_declaration_parameters', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_assignment', '0')
+		properties.put('org.eclipse.jdt.core.formatter.indentation.size', '4')
+		properties.put('org.eclipse.jdt.core.formatter.comment.new_lines_at_block_boundaries', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_declaration_throws', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_colon_in_case', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_colon_in_labeled_statement', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_multiple_field_declarations', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_type_parameters', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_enum_constant', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_switch', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_annotation_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_empty_lines', 'false')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_catch', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.format_line_comments', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_package', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_parenthesized_expression', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_semicolon', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_binary_expression', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_in_empty_enum_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declaration', '16')
+		properties.put('org.eclipse.jdt.core.formatter.insert_new_line_before_finally_in_try_statement', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.compact_else_if', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.indent_breaks_compare_to_cases', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_constructor_declaration', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_for', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_while', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_method_declaration_throws', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_for_increments', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_constructor_declaration', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_switch', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_before_comma_in_array_initializer', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_colon_in_for', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_annotation', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.comment.format_source_code', 'true')
+		properties.put('org.eclipse.jdt.core.compiler.source', '1.7')
+		properties.put('org.eclipse.jdt.core.formatter.comment.line_length', '120')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_unary_operator', 'do not insert')
+		properties.put('org.eclipse.jdt.core.formatter.continuation_indentation', '2')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_comma_in_multiple_local_declarations', 'insert')
+		properties.put('org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_enum_declaration_header', 'true')
+		properties.put('org.eclipse.jdt.core.formatter.insert_space_after_colon_in_assert', 'insert')
+	}
+}
